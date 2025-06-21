@@ -7,10 +7,13 @@ import com.microservico.springboot.dto.UserDTO;
 import com.microservico.springboot.model.UserModel;
 import com.microservico.springboot.repository.UserRepository;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor 
+
 
 public class UserService {
     @Autowired
@@ -41,18 +44,19 @@ public class UserService {
     public UserModel update(Long id, UserDTO userDTO){ 
         UserModel userModel = userRepository.findById(id).orElseThrow(() -> { 
             log.error("User not found with id{}",id);
-            return new RuntimeException("User not found with id": + id );
+            return new RuntimeException("User not found with id:" + id );
         });
-        UserModel.setName(userDTO.getName());
-        UserModel.setEmail(userDTO.getEmail());
+        
+        userModel.setName(userDTO.getName());    
+        userModel.setEmail(userDTO.getEmail());
         return userRepository.save(userModel);
 
     }
 
     public UserModel delete(Long id){
-        UserModel userModel = userRepository.findById(id).orElseThrow(() -> {
-            log.error("User not found with id {}", id);
-            return new RunTimeException("User not found with id"+ id);
+        UserModel userModel = userRepository.findById(id).orElseThrow(() -> { 
+            log.error ("User not found with id {}", id); 
+            return new RuntimeException("User not found with id:" + id);
         });
         userRepository.delete(userModel);
         return userModel;
